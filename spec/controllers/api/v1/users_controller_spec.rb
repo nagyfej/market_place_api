@@ -10,7 +10,7 @@ describe Api::V1::UsersController do
     end
 
     it "returns the information about a reporter on a hash" do
-      user_response = json(response.body)
+      user_response = json_response
       expect(user_response[:email]).to eql @user.email
     end
 
@@ -25,8 +25,8 @@ describe Api::V1::UsersController do
         post :create, {user: @attributes }, format: :json
       end
 
-      it "renders the json representation for the user object just created" do
-         user_response = json(response.body)
+      it "renders the json_response representation for the user object just created" do
+         user_response = json_response
          expect(user_response[:email]).to eql @attributes[:email]
       end
 
@@ -40,12 +40,12 @@ describe Api::V1::UsersController do
       end
 
       it "renders an error" do
-        user_response = json(response.body)
+        user_response = json_response
         expect(user_response).to have_key(:errors)
       end
 
       it "renders the specific error for the email attribute error" do
-        user_response = json(response.body)
+        user_response = json_response
         expect(user_response[:errors][:email]).to include "can't be blank"
       end
 
@@ -64,7 +64,7 @@ describe Api::V1::UsersController do
       end
 
       it "renders user object with the updated attributes" do
-        user_attributes = json(response.body)
+        user_attributes = json_response
         expect(user_attributes[:email]).to eql "new-valid-email@example.com"
       end
 
@@ -74,7 +74,7 @@ describe Api::V1::UsersController do
     context "when can't be updated" do
       before(:each) do
         patch :update, { id: @user.id, user: { email: "new-invalid-email" } }, format: :json
-        @user_response = json(response.body)
+        @user_response = json_response
       end
 
       it "renders an error" do
