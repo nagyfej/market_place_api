@@ -30,8 +30,10 @@ class Api::V1::UsersController < ApplicationController
     render :nothing => true, status: 204
   end
 
-  def user_attributes
-    params.require(:user).permit(:email, :password, :password_confirmation)
-  end
 
+  private
+    def user_attributes
+      params.require(:user).permit(:email, :password, :password_confirmation)
+    end
+  
 end
