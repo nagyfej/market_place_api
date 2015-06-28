@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe Api::V1::SessionsController do
 
-  describe "POST #create" do
+  before(:each) do
+    @user = FactoryGirl.create :user
+  end
 
-    before(:each) do
-      @user = FactoryGirl.create :user
-    end
+  describe "POST #create" do
 
     context "when the credentials are correct" do
 
@@ -36,6 +36,25 @@ describe Api::V1::SessionsController do
 
       it { should respond_with 422 }
     end
+
+  end
+
+  describe "DELETE #destroy" do
+
+    before(:each) do
+      #sing_in :user, @user, store: false
+      credentials = { email: @user.email, password: "123456789" }
+      post :create, { session: credentials }
+      @user.reload
+      @old_token = @user.auth_token
+      delete :destroy, id: @old_token
+    end
+
+    it "have a different auth_token than bedore" do
+      @user.reload
+      expect(@user.auth_token).not_to eql @old_token
+    end
+    it { should respond_with 204 }
 
   end
 
