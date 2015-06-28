@@ -16,6 +16,7 @@ describe User do
   it { should validate_confirmation_of(:password) }
   it { should allow_value("test@example.com").for(:email) }
   it { should have_many(:products) }
+  it { should have_many(:orders) }
 
   describe "when email is not present" do
     before { @user.email = ""}
