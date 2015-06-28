@@ -14,6 +14,8 @@ gem 'jquery-rails'
 
 gem 'active_model_serializers'
 
+gem "devise"
+
 group :development, :test do
   gem 'sqlite3'
   # Use SCSS for stylesheets
@@ -25,13 +27,11 @@ group :development, :test do
   gem 'spring'
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', '~> 0.4.0', group: :doc
-end
-
-group :test do
-  gem "rspec-rails", "~> 2.14"
   gem "factory_girl_rails"
   gem 'ffaker'
 end
 
-gem "devise"
-gem "shoulda-matchers"
+group :test do
+  gem "rspec-rails", "~> 2.14"
+  gem "shoulda-matchers"
+end
