@@ -21,18 +21,27 @@ describe Api::V1::OrdersController do
   describe "GET #show" do
     before(:each) do
       current_user = FactoryGirl.create :user
+      product = FactoryGirl.create :product
       api_authorization_header current_user.auth_token
-      @order = FactoryGirl.create :order, user: current_user
+      @order = FactoryGirl.create :order, user: current_user, products: [product]
       get :show, user_id: current_user.id, id: @order.id
+      @order_response = json_response[:order]
     end
 
     it "returns the user order record matching the id" do
-      order_response = json_response[:order]
-      expect(order_response[:id]).to eql @order.id
+      expect(@order_response[:id]).to eql @order.id
     end
 
-    it { should respond_with 200 }
-  end
+    it "includes the total for the order" do
+      expect(@order_response[:total]).to eql @order.total.to_s
+    end
+
+    it "includes the products on the order" do
+      expect(@order_response[:products].count).to eq(1)
+    end
+
+      it { should respond_with 200 }
+    end
 
   describe "POST #create" do
     before(:each) do
